@@ -79,6 +79,9 @@ edges.on('*', function () {
 });*/
 
 //Selecting nodes
+
+
+
 network.on("select", function (params) {
   //console.log('select Event:', params);
   if (params.nodes.length > 0) {
@@ -89,8 +92,9 @@ network.on("select", function (params) {
   }
   if (selected != null) {
     selectedLabel = nodes._data[selected].label
-    if (idPaths.findIndex(x => x.id==selected) != -1) {
-      selectedLabel = idPaths[idPaths.findIndex(x => x.id==selected)].label;
+    var indexOfSelectedInidPaths = arrayObjectIndexOf(idPaths, selected, "id");
+    if (indexOfSelectedInidPaths != -1) {
+      selectedLabel = idPaths[indexOfSelectedInidPaths].label;
     }
     document.getElementById("selected").textContent = selectedLabel;
 
@@ -353,7 +357,13 @@ function toggleView() {
   }
 }
 
-
+//got this directly from stackoverflow
+function arrayObjectIndexOf(myArray, searchTerm, property) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+        if (myArray[i][property] === searchTerm) return i;
+    }
+    return -1;
+}
 
 //create dropdown menu for selectable nodes when editing ownership relations
 function updateNodeDropdownMenu() {
@@ -361,8 +371,9 @@ function updateNodeDropdownMenu() {
   for (node in nodes._data) {
     if (node != selected){
       var label = nodes._data[node].label
-      if (idPaths.findIndex(x => x.id==node) != -1) {
-        label = idPaths[idPaths.findIndex(x => x.id==node)].label;
+      var indexOfNodeInidPaths = arrayObjectIndexOf(idPaths, node, "id")
+      if (indexOfNodeInidPaths != -1) {
+        label = idPaths[indexOfNodeInidPaths].label
       }
        $('<option value="'+ node +'">' + label + '</option>').appendTo('#owner-edit-menu');
     }
@@ -620,8 +631,9 @@ function changeLayout() {
     }
     if (selected != null) {
       selectedLabel = nodes._data[selected].label
-      if (idPaths.findIndex(x => x.id==selected) != -1) {
-        selectedLabel = idPaths[idPaths.findIndex(x => x.id==selected)].label;
+      var indexOfSelectedInidPaths = arrayObjectIndexOf(idPaths, selected, "id");
+      if (indexOfSelectedInidPaths != -1) {
+        selectedLabel = idPaths[indexOfSelectedInidPaths].label;
       }
       document.getElementById("selected").textContent = selectedLabel;
     }
