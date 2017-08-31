@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+    <title>TransparINT | Ownership Chart Tool</title>
+
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css" type="text/css">
+    <link href="style/visjs.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Londrina+Solid|Open+Sans:400,700|Shadows+Into+Light+Two' rel='stylesheet' type='text/css'>
+    <link href="http://transparint.com/css/style2.css" media="screen" rel="stylesheet">
+    <link rel= "stylesheet" href="style/style.css" type="text/css">
+    <link rel="shortcut icon" href="http://transparint.com/img/favicon.ico" />
+</head>
+
+<body>
+<div class = "container">
+  <p>
+    This is a prototype.
+  </p>
+
+  <h1>Benefical Ownership Chart Tool</h1>
+
+  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove"></span></button>
+         <h3 id="myModalLabel">Edit <span id="selected"></span>
+         </h3>
+         <button id = "advancedPathButton" type = "button" class="btn btn-default btn-sm" data-dismiss="modal" id="advanced-paths" onclick="showAdvancedPaths()">Show advanced ownership relations</button>
+       </div>
+       <div class="modal-body" id="myWizard">
+        <div class="navbar">
+           <div class="navbar-inner">
+                 <ul class="nav nav-pills">
+                    <li class="active"><a href="#step1" data-toggle="tab" data-step="1" onclick = 'footerTab1()'>Edit Information</a></li>
+                    <li><a href="#step2" data-toggle="tab" data-step="2" onclick ='footerTab2()'>Add Entity</a></li>
+                    <li><a href="#step3" data-toggle="tab" data-step="3" onclick ='footerTab3()'>Add Person</a></li>
+                    <li><a href="#step4" data-toggle="tab" data-step="4" onclick ='footerTab4()'>Add Ownership</a></li>
+                 </ul>
+           </div>
+        </div>
+        <div class="tab-content">
+
+          <!-- EDIT SELECTED NODE -->
+           <div class="tab-pane fade in active" id="step1">
+             <div class="well">
+               <label for="type-edit-label">Type</label>
+                 <select id = "type-edit-label">
+                   <option value = "company">Company</option>
+                   <option value = "person">Person</<option>
+                   <option value = "people">Group of People</<option>
+                 </select>
+                <br>
+               <label for="name-edit-label">Name</label>
+               <input id="name-edit-label" type="text" value="New Company">
+             </div>
+           </div>
+
+           <!-- ADD ENTITY -->
+           <div class="tab-pane fade" id="step2">
+              <div class="well">
+                <label for="type-label">Type</label>
+                  <select id = "type-label">
+                    <option value = "company">Company</option>
+                  </select>
+                  <br>
+                <label for="name-label">Name</label>
+                <input id="name-label" type="text" value="Parent Company">
+                <br>
+                <label for="percent-label">Percentage Owned</label></td>
+                <input id="percent-label" type="number" value="50" max = "100" min = "0">
+                <br>
+                <label for="relationship-label">Relationship</label>
+                  <select id = "relationship-label">
+                    <option value = "owner">Parent</option>
+                    <option value = "subsidiary">Subsidiary</<option>
+                </select>
+              </div>
+           </div>
+
+           <!-- ADD PERSON-->
+           <div class="tab-pane fade" id="step3">
+              <div class="well">
+                <label for="type-person">Type</label>
+                  <select id = "type-person">
+                    <option value = "person">Person</<option>
+                    <option value = "people">Group of People</<option>
+                  </select>
+                  <br>
+                <label for="name-person">Name</label>
+                <input id="name-person" type="text" value="Frances Doe">
+                <br>
+                <label for="percent-person">Percentage Owned</label></td>
+                <input id="percent-person" type="number" value="50" max = "100" min = "0">
+                <br>
+                <label for="relationship-person">Relationship</label>
+                  <select id = "relationship-person">
+                    <option value = "owner">Owner</option>
+                </select>
+              </div>
+           </div>
+
+           <!-- ADD OWNERSHIP -->
+           <div class="tab-pane fade" id="step4">
+             <div class="well">
+               <label for="owner-edit-menu">owns:</label>
+               <select id = "owner-edit-menu"></select>
+               <input id="percent-edit-label" type="number" value="50" max = "100" min = "0">
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-danger" id="node-delete" data-dismiss="modal" onclick="deleteNode()">Delete</button>
+         <button type = "button" class="btn btn-primary" id="node-edit" data-dismiss="modal" onclick="editNode()">Save</button>
+       </div>
+     </div>
+   </div>
+ </div>
+ <h2>Network
+   <button class="btn btn-default" onclick = "toggleView()">
+    <img src="img/toggle.png" width="20" />
+   </button>
+   <button class="btn btn-default" onclick = "changeLayout();">
+    <img id = "layoutButton" src="img/free.png" width="20" />
+   </button>
+ </h2>
+
+ <div id="info" class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+   Double Click the icon to begin
+ </div>
+
+ <div id ="pathDiv" class= "m-b-1">
+   <h3>Viewing advanced ownerships for <span id=pathSelect></h3>
+     <button id="hidePaths" type= "button" class= "btn btn-danger btn-sm p-y-1" onclick="hideAdvancedPaths()">Hide advanced relations</button>
+ </div>
+ <div id="network"></div>
+ </div>
+
+ <script type = "text/javascript" src="js/visjs.min.js"></script>
+ <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+ <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+ <script type = "text/javascript" src= "js/script.js" type = "text/javascript"></script>
+
+
+</body>
+</html>
