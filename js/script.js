@@ -307,6 +307,30 @@ function addEdge() {
   }
 }
 
+function deleteEdge() {
+  hideAdvancedPaths();
+  var ownedID = document.getElementById('owner-edit-menu').value;
+  if (selected != null) {
+    try {
+      if (doesEdgeExist(selected, ownedID)) {
+          edges.remove({
+            id: getEdge(selected, ownedID)
+          });
+          $('#myModal').modal("toggle");
+      } else if (doesEdgeExist(ownedID, selected)) {
+        edges.remove({
+          id: getEdge(ownedID, selected)
+        });
+        $('#myModal').modal("toggle");
+      } else {
+          alert("There is no relation between these entities.")
+        }
+    } catch(err) {
+      alert(err)
+    }
+  }
+}
+
 var idPaths = [];
 $("#pathDiv").hide();
 function showAdvancedPaths() {
@@ -673,5 +697,6 @@ function footerTab3() {
 
 function footerTab4() {
   $(".modal-footer").empty();
+  $(".modal-footer").append('<button type = "button" class="btn btn-danger" id="delete-edge" onclick="deleteEdge()">Delete</button>');
   $(".modal-footer").append('<button type = "button" class="btn btn-primary" id="add-edge" onclick="addEdge()">Save</button>');
 }
